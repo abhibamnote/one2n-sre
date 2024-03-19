@@ -6,7 +6,8 @@
   "scripts": {
     "test": "npx jest",
     "dev": "nodemon -L -P 1000 src/index.js",
-    "start": "node src/index.js"
+    "start": "node src/index.js",
+    "migrate": "node src/app.migrate.js"
   },
   "author": "",
   "license": "ISC",

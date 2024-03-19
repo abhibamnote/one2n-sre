@@ -1,8 +1,21 @@
-dev: create-network run-mongo build-api-dev run-api
+# Function to adjust MONGO_URI or assign default if empty
+define adjust_mongo_uri
+$(if $(or $(strip $(MONGO_URI)),abcd),\
+$(if $(findstring mongodb://localhost:,$(MONGO_URI)),\
+$(subst localhost,host.docker.internal,$(MONGO_URI)),\
+$(MONGO_URI)),abcd)
+endef
 
-prod: create-network run-mongo build-api-prod run-api
+# Adjusted MONGO_URI
+ADJUSTED_MONGO_URI:=$(strip $(call adjust_mongo_uri))
 
-test: create-network run-mongo build-api-test run-api-test
+
+
+dev: build-api-dev run-api
+
+prod: build-api-prod run-api
+
+test: build-api-test run-api-test delete-container
 
 
 build-api-dev:
@@ -14,21 +27,13 @@ build-api-prod:
 build-api-test:
 	docker build -f DockerFile -t sre-api --no-cache --target test .
 
-
-create-network:
-	docker network create SRE_NET
-
-run-mongo:
-	docker run -d --network SRE_NET --name mongo mongo
-
 run-api:
-	docker run -d -e PORT=$(PORT) -e MONGO_URI=mongodb://0.0.0.0:27017 --network SRE_NET --name sre-api -p $(PORT):$(PORT) sre-api
+	docker run -d -v ./src:/usr/src/app/src -e PORT=$(PORT) -e MONGO_URI=$(ADJUSTED_MONGO_URI) --name sre-api -p $(PORT):$(PORT) sre-api
 
 run-api-test:
-	docker run -e PORT=$(PORT) -e MONGO_URI=mongodb://0.0.0.0:27017 --network SRE_NET --name sre-api -p $(PORT):$(PORT) sre-api
+	docker run -e PORT=$(PORT) -e MONGO_URI=$(ADJUSTED_MONGO_URI) --name sre-api -p $(PORT):$(PORT) sre-api
 
 delete-container:
-	docker stop sre-api mongo
-	docker rm sre-api mongo
-	docker network rm SRE_NET
+	docker stop sre-api
+	docker rm sre-api
 	docker rmi sre-api

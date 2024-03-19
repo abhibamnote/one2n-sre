@@ -13,7 +13,7 @@ const StudentSchema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: true,
+        required: true
     },
     phone: {
         type: String,
@@ -24,7 +24,7 @@ const StudentSchema = new mongoose.Schema({
     }
 })
 
-StudentSchema.plugin(autoIncrement, { inc_field: 'id' });
+StudentSchema.plugin(autoIncrement, { inc_field: 'id', start_seq: 4 });
 
 const Student = mongoose.model('Student', StudentSchema);
 

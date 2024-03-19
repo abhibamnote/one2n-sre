@@ -61,13 +61,13 @@ describe("POST /students", () => {
 
 describe("Get /students/:id", () => {
     test('should return status code 200', async () => {
-        const response = await request(app).get("/api/v1/students/1")
+        const response = await request(app).get("/api/v1/students/4")
 
         expect(response.statusCode).toBe(200)
     })
 
     test('should return status code 200', async () => {
-        const response = await request(app).get("/api/v1/students/2")
+        const response = await request(app).get("/api/v1/students/5")
 
         expect(response.statusCode).toBe(200)
     })

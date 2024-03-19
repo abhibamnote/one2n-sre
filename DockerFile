@@ -22,8 +22,8 @@ CMD [ "npm", "start" ]
 
 # Deployment stage
 
-FROM alpine:latest as production
-RUN apk --no-cache add nodejs ca-certificates
+FROM alpine:3.19.1 as production
+RUN apk --no-cache add nodejs=20.11.1-r0 ca-certificates=20240226-r0
 WORKDIR /root/
 COPY --from=builder /usr/src/app ./
 CMD [ "node", "src/index.js" ]
@@ -39,6 +39,5 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
-
 
 CMD ["npm", "run", "test"]
