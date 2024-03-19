@@ -4,44 +4,40 @@ This is an assignment from SRE bootcamp from [One2N](https://playbook.one2n.in/s
 
 ## Prerequisites
 
-1. NodeJS v20 or later must be installed.
+1. Docker v19 or later must be installed.
 
-2. Use the package manager npm to install this application.
+2. GNU make to run makefile.
 
-3. MongoDB must be installed and running.
+Note: Windows users can use [this](https://gnuwin32.sourceforge.net/packages/make.htm) to install make.
 
 ```bash
-node -v
-v20.7.0
-
-mongo --version
-MongoDB shell version v5.0.4
-
-npm install
+make -v
 ```
-
-## Setup
-
-Create a .env file and add these environment variables into it.
-
-```env
-PORT={PORT_NUMBER}
-MONGO_URI={MONGO_URI}
-```
-
 ## Run the project
 
-Run test cases for the api
+There are two environment variables for this project:
+1. PORT 
+2. MONGO_URI
 
-This will create a new test database and delete it after testing.
+Both of these variables are mandatory.
 
+There are 3 ways to run this application
+1. run tests
 ```bash
-npm run test
+make PORT=4545 MONGO_URI=mongodb://localhost:27017 test
+```
+2. run dev
+```bash
+make PORT=4545 MONGO_URI=mongodb://localhost:27017 dev
+```
+3. run prod
+```bash
+make PORT=4545 MONGO_URI=mongodb://localhost:27017 test
 ```
 
-Run the api in local development environment
-
+Note: To stop and delete the container use:
 ```bash
-npm run dev
+make delete-container
 ```
+
 Use [this](https://www.postman.com/restless-robot-286687/workspace/one2n-bootcamp/collection/17462355-720aa868-f6fd-4327-8e49-20903149337f?action=share&creator=17462355) postman collection for API request lists and documentation.
