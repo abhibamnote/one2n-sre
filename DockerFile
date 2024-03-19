@@ -1,0 +1,44 @@
+FROM node:20.1.0 as base
+WORKDIR /user/src/app
+
+FROM base as development
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+CMD ["npm", "run", "dev"]
+
+# Builder stage
+FROM development as builder
+WORKDIR /usr/src/app
+RUN rm -rf node_modules
+RUN npm ci --only=production
+CMD [ "npm", "start" ]
+
+# Deployment stage
+
+FROM alpine:latest as production
+RUN apk --no-cache add nodejs ca-certificates
+WORKDIR /root/
+COPY --from=builder /usr/src/app ./
+CMD [ "node", "src/index.js" ]
+
+# Test stage
+
+FROM base as test
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+
+CMD ["npm", "run", "test"]
