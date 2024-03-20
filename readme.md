@@ -15,29 +15,16 @@ make -v
 ```
 ## Run the project
 
-There are two environment variables for this project:
+There are three environment variables for this project which needs to be added in .env file in same directory:
 1. PORT 
 2. MONGO_URI
+3. ENVIRONMENT = test / production / developement
 
 Both of these variables are mandatory.
 
-There are 3 ways to run this application
-1. run tests
+To run the project run this command after setting up environment variables
 ```bash
-make PORT=4545 MONGO_URI=mongodb://localhost:27017 test
-```
-2. run dev
-```bash
-make PORT=4545 MONGO_URI=mongodb://localhost:27017 dev
-```
-3. run prod
-```bash
-make PORT=4545 MONGO_URI=mongodb://localhost:27017 test
-```
-
-Note: To stop and delete the container use:
-```bash
-make delete-container
+docker-compose up
 ```
 
 Use [this](https://www.postman.com/restless-robot-286687/workspace/one2n-bootcamp/collection/17462355-720aa868-f6fd-4327-8e49-20903149337f?action=share&creator=17462355) postman collection for API request lists and documentation.
