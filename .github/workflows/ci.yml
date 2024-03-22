@@ -32,9 +32,9 @@ jobs:
       -
         name: test
         env:
-          MONGO_URI: ${{env.MONGO_URI}}
+          MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
-          docker run --rm ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
+          docker run --rm -e MONGO_URI=${{secrets.MONGO_URI}} ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
       -
         name: Build and push
         uses: docker/build-push-action@v5
