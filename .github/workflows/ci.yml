@@ -31,6 +31,8 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
       -
         name: test
+        env:
+          MONGO_URI: ${{env.MONGO_URI}}
         run: |
           docker run --rm ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
       -
