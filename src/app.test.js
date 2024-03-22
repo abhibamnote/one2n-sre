@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const dbConnection = async () =>{
     await mongoose.connect(`${process.env.MONGO_URI}/studentTest`);
+    console.log(process.env.MONGO_URI);
 }
 
 
@@ -135,4 +136,5 @@ describe("Delete /students/:id", () => {
 afterAll(async () =>{
     await mongoose.connection.dropDatabase()
     await mongoose.connection.close()
+    console.log(process.env.MONGO_URI);
 });
