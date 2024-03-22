@@ -28,7 +28,7 @@ jobs:
           context: .
           target: test
           load: true
-          tag: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
       -
         name: test
         run: |
