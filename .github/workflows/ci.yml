@@ -28,6 +28,11 @@ jobs:
           context: .
           target: test
           load: true
+          tag: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
+      -
+        name: test
+        run: |
+          docker run -rm ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
       -
         name: Build and push
         uses: docker/build-push-action@v5
