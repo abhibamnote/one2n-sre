@@ -1,26 +1,49 @@
-version: '3'
+version: '3.3'
 services:
-  app:
+  mongo:
+    image: mongo:4.4.6
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - /data/db:/mongodata
+  api-one:
     build: 
-      context: .
-      dockerfile: DockerFile
+      context: ./backend
+      dockerfile: Dockerfile
       target: ${ENVIRONMENT}
     environment:
-      PORT: ${PORT}
+      PORT: 8081
       MONGO_URI: ${MONGO_URI}
     ports:
-      - 4545:${PORT}
+      - 8081:8081
+    volumes:
+      - ./src:/usr/src/app/src
+    depends_on:
+      - mongo
+  api-two:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+      target: ${ENVIRONMENT}
+    environment:
+      PORT: 8082
+      MONGO_URI: ${MONGO_URI}
+    ports:
+      - 8082:8082
     volumes:
       - ./src:/usr/src/app/src
     depends_on:
       - mongo
 
-  mongo:
-    image: mongo
-    restart: always
+  nginx:
+    depends_on:
+      - api-one
+      - api-two
+    build:
+      context: ./nginx-proxy
+      dockerfile: Dockerfile
     ports:
-      - "8001:27017"
-    volumes:
-      - /data/db:/mongodata
+      - "8085:8080"
 volumes:
   mongodata:
