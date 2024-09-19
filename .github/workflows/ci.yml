@@ -27,7 +27,7 @@ jobs:
         name: Build and export to docker
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./backend
           target: test
           load: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:test
